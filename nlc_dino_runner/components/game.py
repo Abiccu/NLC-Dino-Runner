@@ -3,8 +3,8 @@ from nlc_dino_runner.utils.constants import (
     TITTLE,
     ICON,
     SCREEN_WIDTH,
-    SCREEN_HEIGHT
-    BG
+    SCREEN_HEIGHT,
+    BG,
     FPS
 )
 
