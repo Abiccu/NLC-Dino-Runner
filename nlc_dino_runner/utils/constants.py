@@ -1,11 +1,12 @@
 import pygame
 import os
 
+TITTLE = "Chrome Dino Runner"
+
 # Global Constants
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 FPS = 30
-IMG_DIR = os.path.join(os.path.dirname(__file__), "..", "assets")
 
 # Assets Constants
 RUNNING = [
@@ -66,4 +67,5 @@ BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
 
 HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 
+ICON = pygame.image.load(os.path.join(IMG_DIR,'DinoWallpa'))
 DEFAULT_TYPE = "default"
