@@ -6,9 +6,11 @@ from pygame.sprite import Sprite
 
 class Dinosaur(Sprite):
     X_POS = 80
-    Y_POS = 310
-    Y_POS_DUCK = 340
-    JUMP_VEL = 10
+    Y_POS = 320
+    Y_POS_DUCK = 342
+    JUMP_VEL = 9
+
+# step_index es un contador para saber cuando debemos cambiar de imagen
 
     def __init__(self):
         self.image = RUNNING[0]
@@ -16,23 +18,25 @@ class Dinosaur(Sprite):
         self.dino_rect.x = self.X_POS
         self.dino_rect.y = self.Y_POS
         self.step_index = 0
+# son los etados en el que estara el dinisaur, nos ayudara a definir cuando agacharse, correr y saltar
         self.dino_run = True
         self.dino_duck = False
         self.dino_jump = False
         self.jum_vel = self.JUMP_VEL
 
     def update(self, user_input):
+#llamamos a los metodos adecuados en cada condicional
         if self.dino_run:
             self.run()
         if self.dino_duck:
             self.duck()
         if self.dino_jump:
             self.jump()
-
         if user_input[pygame.K_DOWN] and not self.dino_jump:
             self.dino_run = False
             self.dino_duck = True
             self.dino_jump = False
+# user_imput[pygame.K_DOWN(flecha abajo)nos permite detectar la tecla precionada
         elif user_input[pygame.K_UP] and not self.dino_jump:
             self.dino_run = False
             self.dino_duck = False
@@ -45,6 +49,8 @@ class Dinosaur(Sprite):
         if self.step_index >= 10:
             self.step_index = 0
 
+    #mandamos screen como un parametro para poder hacer uso de el en draw
+
     def draw(self, screen):
         screen.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
 
@@ -54,6 +60,8 @@ class Dinosaur(Sprite):
         self.dino_rect.x = self.X_POS
         self.dino_rect.y = self.Y_POS
         self.step_index += 1
+
+    # step_index sirve para hacer que el dinosaurio cambie de disfraz continuamente
 
     def duck(self):
         self.image = RUNNING[0] if self.step_index < 5 else DUCKING[1]
@@ -65,12 +73,9 @@ class Dinosaur(Sprite):
     def jump(self):
         self.image = JUMPING
         if self.dino_jump:
-            self.dino_rect.y -= self.jum_vel
+            self.dino_rect.y -= self.jum_vel * 4
             self.jum_vel -= 1
         if self.jum_vel < -self.JUMP_VEL:
             self.dino_rect.y = self.Y_POS
             self.dino_jump = False
             self.jum_vel = self.JUMP_VEL
-
-
-
