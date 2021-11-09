@@ -21,6 +21,7 @@ class Game:
         self.game_speed = 20
         self.clock = pygame.time.Clock()
         self.player = Dinosaur()
+        self.opstacle = Cactus()
 
     def run(self):
         self.playing = True
