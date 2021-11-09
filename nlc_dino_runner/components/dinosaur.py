@@ -8,7 +8,7 @@ class Dinosaur(Sprite):
     X_POS = 80
     Y_POS = 320
     Y_POS_DUCK = 342
-    JUMP_VEL = 9
+    JUMP_VEL = 12
 
 # step_index es un contador para saber cuando debemos cambiar de imagen
 
