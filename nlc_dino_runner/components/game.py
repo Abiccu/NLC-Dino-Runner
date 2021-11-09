@@ -7,6 +7,7 @@ from nlc_dino_runner.utils.constants import (
     BG,
     FPS
 )
+from nlc_dino_runner.components.obstacles.cactus import Cactus
 from nlc_dino_runner.components.dinosaur import Dinosaur
 
 class Game:
@@ -21,7 +22,7 @@ class Game:
         self.game_speed = 20
         self.clock = pygame.time.Clock()
         self.player = Dinosaur()
-        self.opstacle = Cactus()
+        self.obstacle = ObstacleManager()
 
     def run(self):
         self.playing = True
@@ -39,14 +40,17 @@ class Game:
     def update(self):
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
+        self.obstacle.update(self)
 
     def draw(self):
         self.clock.tick(30)
         self.screen.fill((255, 255, 255))
         self.draw_background()
         self.player.draw(self.screen)
+        self.obstacle.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
+
 
     def draw_background(self):
         image_with = BG.get_width()
