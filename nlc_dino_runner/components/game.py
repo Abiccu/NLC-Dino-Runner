@@ -11,7 +11,7 @@ from nlc_dino_runner.utils.constants import (
 from nlc_dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from nlc_dino_runner.components.obstacles.cactus import Cactus
 from nlc_dino_runner.components.dinosaur import Dinosaur
-
+from nlc_dino_runner.utils import text_utils
 class Game:
     def __init__(self):
         #llamamos a pygame y a su metodo init para inicializar y cuando llamaemos recien se va mostrar
@@ -29,15 +29,79 @@ class Game:
         self.clock = pygame.time.Clock()
         self.player = Dinosaur()
         self.obstacle = ObstacleManager()
+        self.points = 0
+        self.death_count = 0
+
+    def score(self):
+        self.points += 1
+        if self.points % 20 == 0:
+            self.game_speed +=1
+        score_element, score_element_rec = text_utils.get_score_element(self.points)
+        self.screen.blit(score_element, score_element_rec)
 # (run) va a ejecutar todos los metodos que le pongamos
+
+
+    def show_menu(self):
+        white_color = (255, 255, 255)
+        self.screen.fill(white_color)
+        self.print_menu_elements()
+        pygame.display.update()
+        self.handle_key_events_on_menu()
+
+    def menu_final(self):
+        white_color = (255, 255, 255)
+        self.screen.fill(white_color)
+        self.print_menu_final()
+        pygame.display.update()
+        self.handle_key_events_on_menu()
+
+    def print_menu_elements(self):
+        half_width = SCREEN_WIDTH // 2
+        half_height = SCREEN_HEIGHT // 2
+        text_element, text_element_rec = text_utils.get_centared_message("Press any key to start")
+        self.screen.blit(text_element, text_element_rec)
+        self.screen.blit(ICON, (half_width - 40, half_height -150))
+
+    def print_menu_final(self):
+        half_width = SCREEN_WIDTH // 2
+        half_height = SCREEN_HEIGHT // 2
+        text_element, text_element_rec = text_utils.get_centared_message("Press any key to restart")
+        self.screen.blit(text_element, text_element_rec)
+        text_element, text_element_rec = text_utils.get_centared_message("Dath Coundt :" + str(self.death_count),height=half_height + 50)
+        self.screen.blit(text_element, text_element_rec)
+        self.screen.blit(ICON, (half_width - 40, half_height - 150))
+
+    def handle_key_events_on_menu(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
+                self.playing = False
+                pygame.display.quit()
+                pygame.quit()
+                exit()
+            if event.type == pygame.KEYDOWN:
+                self.run()
+
+
+
+
     def run(self):
+        self.points = 0
+        self.obstacle.reset_obstacles()
         #cambiamos a True para que comiense a correr el juego
         self.playing = True
         while self.playing:
             self.events()
             self.update()
             self.draw()
-        pygame.quit()
+
+
+    def execute(self):
+        self.running = True
+        while self.running:
+            if not self.playing:
+                self.show_menu()
+
 # pygame.quit() para terminar el siclo
     def events(self):
         for event in pygame.event.get():
@@ -53,11 +117,12 @@ class Game:
         self.obstacle.update(self)
 
     def draw(self):
-        self.clock.tick(29)
+        self.clock.tick(30)
         self.screen.fill((255, 255, 255))
         self.draw_background()
         self.player.draw(self.screen)
         self.obstacle.draw(self.screen)
+        self.score()
         pygame.display.update()
         pygame.display.flip()
 #pygame.display.flill el metodo flill de pygame nos sirve para llenar la superficie con un color entero(recibe una dupla)
