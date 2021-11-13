@@ -8,6 +8,8 @@ from nlc_dino_runner.utils.constants import (
     BG,
     FPS
 )
+
+from nlc_dino_runner.components.powerups.power_up_manager import PowerUpManager
 from nlc_dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from nlc_dino_runner.components.obstacles.cactus import Cactus
 from nlc_dino_runner.components.dinosaur import Dinosaur
@@ -41,7 +43,8 @@ class Game:
         score_element, score_element_rec = text_utils.get_score_element(self.points)
         self.screen.blit(score_element, score_element_rec)
 # (run) va a ejecutar todos los metodos que le pongamos
-
+        self.screen.blit(text, text_rect)
+        self.player.check_invincibility(self.screen)
 
     def show_menu(self):
         white_color = (255, 255, 255)
@@ -65,7 +68,7 @@ class Game:
             text_element, text_element_rec = text_utils.get_centared_message("Dath Coundt :" + str(self.death_count), height=half_height + 50)
             self.screen.blit(text_element, text_element_rec)
         self.screen.blit(ICON, (half_width - 40, half_height - 150))
-    d
+
 
     def handle_key_events_on_menu(self):
         for event in pygame.event.get():
@@ -77,8 +80,6 @@ class Game:
                 exit()
             if event.type == pygame.KEYDOWN:
                 self.run()
-
-
 
 
     def run(self):
@@ -112,6 +113,8 @@ class Game:
         self.player.update(user_input)
         self.obstacle.update(self)
         self.power_up_manager.update(self.points, self.game_speed, self.player)
+
+
     def draw(self):
         self.clock.tick(30)
         self.screen.fill((255, 255, 255))
