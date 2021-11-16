@@ -8,7 +8,7 @@ from nlc_dino_runner.utils.constants import (
     BG,
     FPS
 )
-
+from nlc_dino_runner.components.obstacles.heart import Heart
 from nlc_dino_runner.components.powerups.power_up_manager import PowerUpManager
 from nlc_dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from nlc_dino_runner.components.obstacles.cactus import Cactus
@@ -31,7 +31,8 @@ class Game:
         self.clock = pygame.time.Clock()
         self.player = Dinosaur()
         self.obstacle = ObstacleManager()
-        self.power_up_manager = PowerUpManager
+        self.power_up_manager = PowerUpManager()
+        self.heart = Heart()
         self.points = 0
         self.RUNING = True
         self.death_count = 0
@@ -43,7 +44,7 @@ class Game:
         score_element, score_element_rec = text_utils.get_score_element(self.points)
         self.screen.blit(score_element, score_element_rec)
 # (run) va a ejecutar todos los metodos que le pongamos
-        self.screen.blit(text, text_rect)
+        #self.screen.blit(text, text_rect)
         self.player.check_invincibility(self.screen)
 
     def show_menu(self):
@@ -123,6 +124,7 @@ class Game:
         self.obstacle.draw(self.screen)
         self.power_up_manager.draw(self.screen)
         self.score()
+        self.heart.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
 #pygame.display.flill el metodo flill de pygame nos sirve para llenar la superficie con un color entero(recibe una dupla)
