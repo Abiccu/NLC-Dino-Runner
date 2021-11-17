@@ -2,6 +2,9 @@ from nlc_dino_runner.components.obstacles.cactus import Cactus
 from nlc_dino_runner.utils.constants import SMALL_CACTUS
 from nlc_dino_runner.components.obstacles.bird import Birds
 from nlc_dino_runner.utils.constants import BIRD
+#from nlc_dino_runner.components.obstacles.bird import Bird
+#from nlc_dino_runner.utils.constants import BIRD
+
 import pygame
 
 
@@ -14,6 +17,9 @@ class ObstacleManager:
         if len(self.obstacles) == 0:
             self.obstacles.append(Cactus(SMALL_CACTUS))
             self.obstacles.append(Birds(BIRD))
+
+        #elif len(self.obstacles) == 2
+            #self.obstacles.append(Birt(BIRD)
         for obstacle in self.obstacles:
             obstacle.update(self.obstacles)
             if game.player.dino_rect.colliderect(obstacle.rect):

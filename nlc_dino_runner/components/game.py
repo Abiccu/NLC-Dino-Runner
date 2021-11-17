@@ -19,6 +19,7 @@ class Game:
         #llamamos a pygame y a su metodo init para inicializar y cuando llamaemos recien se va mostrar
         #pygame.display.set_caption es un metodo que ya tiene pygame para configurar el titulo de la ventana
         pygame.init()
+        pygame.mixer.init()
         pygame.display.set_caption(TITTLE)
         pygame.display.set_icon(ICON)
         self.playing = False
@@ -117,14 +118,14 @@ class Game:
 
 
     def draw(self):
-        self.clock.tick(30)
+        self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
         self.player.draw(self.screen)
         self.obstacle.draw(self.screen)
         self.power_up_manager.draw(self.screen)
         self.score()
-        self.heart.draw(self.screen)
+        #self.heart.draw()
         pygame.display.update()
         pygame.display.flip()
 #pygame.display.flill el metodo flill de pygame nos sirve para llenar la superficie con un color entero(recibe una dupla)

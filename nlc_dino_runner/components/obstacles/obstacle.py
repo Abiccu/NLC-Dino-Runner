@@ -10,6 +10,7 @@ class Obstacle(Sprite):
         self.rect = self.image[self.index].get_rect()
         self.rect.x = SCREEN_WIDTH
 
+
     def update(self, obstacles):
         self.rect.x -= 10
         if self.rect.x < -self.rect.width:
