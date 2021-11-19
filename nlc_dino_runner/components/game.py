@@ -8,7 +8,7 @@ from nlc_dino_runner.utils.constants import (
     BG,
     FPS
 )
-from nlc_dino_runner.components.obstacles.heart import Heart
+from nlc_dino_runner.components.player_hearts.player_heart_manager import PlayerHeartManager
 from nlc_dino_runner.components.powerups.power_up_manager import PowerUpManager
 from nlc_dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from nlc_dino_runner.components.obstacles.cactus import Cactus
@@ -33,7 +33,7 @@ class Game:
         self.player = Dinosaur()
         self.obstacle = ObstacleManager()
         self.power_up_manager = PowerUpManager()
-        self.heart = Heart()
+        self.player_heart_manager = PlayerHeartManager()
         self.points = 0
         self.RUNING = True
         self.death_count = 0
@@ -124,6 +124,7 @@ class Game:
         self.player.draw(self.screen)
         self.obstacle.draw(self.screen)
         self.power_up_manager.draw(self.screen)
+        self.player_heart_manager.draw(self.screen)
         self.score()
         #self.heart.draw()
         pygame.display.update()
@@ -141,3 +142,8 @@ class Game:
         self.x_pos_bg -= self.game_speed
         # el metodo blit nos ayuda a dibujar una superficie sobre otra sperficie
         # self.screen es a pantalla y la vamos actualizando es un objeto a las que vamos agragando mas cosas
+
+    def create_components(self):
+        self.obstacle_manager.reset_obstacles()
+        self.power_up_manager.reset_power_ups(self.points)
+        self.player_heart_manager.reset_hearts()

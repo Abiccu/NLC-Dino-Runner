@@ -34,6 +34,7 @@ class Dinosaur(Sprite):
         self.dino_duck = False
         self.dino_jump = False
         self.jum_vel = self.JUMP_VEL
+        #self.sound_jump = SOUND_JUMP
 
     def update(self, user_input):
 #llamamos a los metodos adecuados en cada condicional
@@ -52,6 +53,7 @@ class Dinosaur(Sprite):
             self.dino_run = False
             self.dino_duck = False
             self.dino_jump = True
+            self.sound_jump.play()
         elif not self.dino_jump:
             self.dino_run = True
             self.dino_duck = False

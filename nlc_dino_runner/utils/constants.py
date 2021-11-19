@@ -4,6 +4,8 @@ import os
 TITTLE = "Chrome Dino Runner"
 FONT_STYLE = 'freesansbold.ttf'
 BLACK_COLOR = (0, 0, 0)
+HEART_COUNT = 5
+HAMMER_POWER_UP = 10
 #SOUND_JUMP = pygame.mixer.Sound("jump.wav")
 # Global Constants
 SCREEN_HEIGHT = 600
