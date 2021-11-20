@@ -1,5 +1,5 @@
 from nlc_dino_runner.components.power_up import PowerUp
-from nlc_dino_runner.utils.constants import HAMMER
+from nlc_dino_runner.utils.constants import HAMMER, HAMMER_TYPE
 
 
 class HammerPowerUp(PowerUp):

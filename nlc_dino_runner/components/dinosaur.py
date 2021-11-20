@@ -1,15 +1,18 @@
 import pygame
 
-from nlc_dino_runner.utils.constants import RUNNING, DUCKING, JUMPING, SHIELD_TYPE, JUMPING_SHIELD, DEFAULT_TYPE, \
-    DUCKING_SHIELD, RUNNING_SHIELD, FONT_STYLE,BLACK_COLOR
+from nlc_dino_runner.components.powerups.hammers import Hammers
+from nlc_dino_runner.utils.constants import RUNNING, JUMPING, SHIELD_TYPE, DEFAULT_TYPE, DUCKING_SHIELD, \
+    RUNNING_SHIELD, DUCKING, RUNNING_SHIELD, FONT_STYLE,BLACK_COLOR,JUMPING_SHIELD, HAMMER_TYPE, RUNNING_HAMMER
+
 from pygame.sprite import Sprite
 
 
 class Dinosaur(Sprite):
     X_POS = 80
     Y_POS = 320
-    Y_POS_DUCK = 342
+    Y_POS_DUCK = 350
     JUMP_VEL = 12
+
 
 # step_index es un contador para saber cuando debemos cambiar de imagen
 
@@ -34,7 +37,14 @@ class Dinosaur(Sprite):
         self.dino_duck = False
         self.dino_jump = False
         self.jum_vel = self.JUMP_VEL
+        self.has_powerup = False
+        self.shield = False
+        self.show_text = False
+        self.shield_time_up = 0
+        self.hammer = None
+        self.hammer_enabled = 0
         #self.sound_jump = SOUND_JUMP
+
 
     def update(self, user_input):
 #llamamos a los metodos adecuados en cada condicional
@@ -48,12 +58,13 @@ class Dinosaur(Sprite):
             self.dino_run = False
             self.dino_duck = True
             self.dino_jump = False
+
 # user_imput[pygame.K_DOWN(flecha abajo)nos permite detectar la tecla precionada
         elif user_input[pygame.K_UP] and not self.dino_jump:
             self.dino_run = False
             self.dino_duck = False
             self.dino_jump = True
-            self.sound_jump.play()
+            #self.sound_jump.play()
         elif not self.dino_jump:
             self.dino_run = True
             self.dino_duck = False
@@ -62,10 +73,20 @@ class Dinosaur(Sprite):
         if self.step_index >= 10:
             self.step_index = 0
 
+        if self.hammer_enabled > 0 and user_input[pygame.K_SPACE]:
+            self.hammer = Hammers(self.dino_rect.x + 100, self.dino_rect.y + 50)
+            self.hammer_enabled = max(self.hammer_enabled - 1, 0)
+            if self.hammer_enabled == 0:
+                self.update_to_default(HAMMER_TYPE)
+        if self.hammer:
+            self.hammer.update()
+
     #mandamos screen como un parametro para poder hacer uso de el en draw
 
     def draw(self, screen):
         screen.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
+        if self.hammer:
+            self.hammer.draw(screen)
 
     def run(self):
         #self.image = RUNNING[0] if self.step_index < 5 else RUNNING[1]

@@ -23,17 +23,17 @@ class ObstacleManager:
         for obstacle in self.obstacles:
             obstacle.update(self.obstacles)
             if game.player.dino_rect.colliderect(obstacle.rect):
-               if not game.player.shield:
-                    game.player_heart_manager.redece_heart()
+                if game.player.shield:
+                    self.obstacles.remove(obstacle)
+                if not game.player.shield:
+                    game.player_heart_manager.reduce_heart()
                     if game.player_heart_manager.heart_count > 0:
                         game.player.shield = True
                         game.player.show_text = False
                         start_time = pygame.time.get_ticks()
-                        game.player.shield_time_up = start_time + 100
-                    #else:
-                        #self.obstacles.remove(obstacle)
+                        game.player.shield_time_up = start_time + 1000
 
-               else:
+                else:
                     pygame.time.delay(500)
                     game.playing = False
                     game.death_count += 1

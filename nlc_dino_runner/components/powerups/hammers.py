@@ -7,7 +7,7 @@ class Hammers(Sprite):
         Sprite.__init__(self)
         self.image = HAMMER
         self.rect = self.image.get_rect()
-        self.rect.center.x = x
+        self.rect.centerx = x
         self.rect.bottom = y
         self.speedy = 10
 
