@@ -8,6 +8,7 @@ from nlc_dino_runner.utils.constants import (
     BG,
     FPS
 )
+from nlc_dino_runner.components.cloud import Cloud
 from nlc_dino_runner.components.player_hearts.player_heart_manager import PlayerHeartManager
 from nlc_dino_runner.components.powerups.power_up_manager import PowerUpManager
 from nlc_dino_runner.components.obstacles.obstacle_manager import ObstacleManager
@@ -34,6 +35,7 @@ class Game:
         self.obstacle = ObstacleManager()
         self.power_up_manager = PowerUpManager()
         self.player_heart_manager = PlayerHeartManager()
+        self.cloud = Cloud()
         self.points = 0
         self.RUNING = True
         self.death_count = 0
@@ -115,7 +117,7 @@ class Game:
         self.player.update(user_input)
         self.obstacle.update(self)
         self.power_up_manager.update(self.points, self.game_speed, self.player)
-
+        self.cloud.update(self.game_speed)
 
     def draw(self):
         self.clock.tick(FPS)
@@ -126,6 +128,7 @@ class Game:
         self.power_up_manager.draw(self.screen)
         self.player_heart_manager.draw(self.screen)
         self.score()
+        self.cloud.draw(self.screen)
         #self.heart.draw()
         pygame.display.update()
         pygame.display.flip()

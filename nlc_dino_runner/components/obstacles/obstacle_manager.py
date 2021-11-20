@@ -1,7 +1,8 @@
 from nlc_dino_runner.components.obstacles.cactus import Cactus
-from nlc_dino_runner.utils.constants import SMALL_CACTUS
+from nlc_dino_runner.utils.constants import SMALL_CACTUS, LARGE_CACTUS
 from nlc_dino_runner.components.obstacles.bird import Birds
 from nlc_dino_runner.utils.constants import BIRD
+from nlc_dino_runner.components.obstacles.large_cactus import LargeCactus
 import random
 
 import pygame
@@ -11,14 +12,15 @@ class ObstacleManager:
 
     def __init__(self):
         self.obstacles = []
-        self.random = random.randint(1,2)
 
     def update(self, game):
         if len(self.obstacles) == 0:
-            if self.random == 1:
+            if random.randint(0, 2) == 0:
                 self.obstacles.append(Cactus(SMALL_CACTUS))
-            else:
+            elif random.randint(0, 2) == 1:
                 self.obstacles.append(Birds(BIRD))
+            elif random.randint(0, 2) == 2:
+                self.obstacles.append(LargeCactus(LARGE_CACTUS))
 
         for obstacle in self.obstacles:
             obstacle.update(self.obstacles)
@@ -52,6 +54,8 @@ class ObstacleManager:
     def draw(self, screen):
         for obstacle in self.obstacles:
             obstacle.draw(screen)
+            obstacle.update(self.obstacles)
+
 
     def reset_obstacles(self):
         self.obstacles = []
