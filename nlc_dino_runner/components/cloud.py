@@ -7,7 +7,6 @@ class Cloud(Sprite):
     def __init__(self):
         self.image = CLOUD
         self.rect = self.image.get_rect()
-        # posicion
         self.rect.x = SCREEN_HEIGHT + random.randint(800, 1000)
         self.rect.y = random.randint(100, 140)
 

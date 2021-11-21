@@ -60,10 +60,10 @@ class Game:
     def print_menu_elements(self):
         half_width = SCREEN_WIDTH // 2
         half_height = SCREEN_HEIGHT // 2
-        if self.death_count >= 1:
+        if self.points >= 1:
             text_element, text_element_rec = text_utils.get_centared_message("Press any key to restart")
             self.screen.blit(text_element, text_element_rec)
-            text_element, text_element_rec = text_utils.get_centared_message("Dath Coundt :" + str(self.death_count),height=half_height + 50)
+            text_element, text_element_rec = text_utils.get_centared_message("Death Coundt :" + str(self.death_count),height=half_height + 50)
             self.screen.blit(text_element, text_element_rec)
         else:
             text_element, text_element_rec = text_utils.get_centared_message("Press any key to start")
@@ -85,7 +85,6 @@ class Game:
     def run(self):
         self.points = 0
         self.obstacle.reset_obstacles()
-        #cambiamos a True para que comiense a correr el juego
         self.playing = True
         self.create_components()
         while self.playing:
@@ -112,6 +111,7 @@ class Game:
         self.power_up_manager.update(self.points, self.game_speed, self.player)
         self.cloud.update(self.game_speed)
 
+
     def draw(self):
         self.clock.tick(FPS)
         self.screen_update()
@@ -123,7 +123,6 @@ class Game:
         self.player_heart_manager.draw(self.screen)
         self.score()
         self.cloud.draw(self.screen)
-        #self.heart.draw()
         pygame.display.update()
         pygame.display.flip()
 
@@ -134,9 +133,7 @@ class Game:
         if self.counter == 2000:
             self.counter = 0
             self.white = (255, 255, 255)
-#pygame.display.flill el metodo flill de pygame nos sirve para llenar la superficie con un color entero(recibe una dupla)
-# flip , actualiza loque se configure y se muestra en la pantalla
-    # update tambien muestra en la pantalla pero selo recibe siertas partes de nuestra pantalla
+
     def draw_background(self):
         image_with = BG.get_width()
         self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
@@ -145,8 +142,7 @@ class Game:
             self.screen.blit(BG, (image_with + self.x_pos_bg, self.y_pos_bg))
             self.x_pos_bg = 0
         self.x_pos_bg -= self.game_speed
-        # el metodo blit nos ayuda a dibujar una superficie sobre otra sperficie
-        # self.screen es a pantalla y la vamos actualizando es un objeto a las que vamos agragando mas cosas
+
 
     def create_components(self):
         self.obstacle.reset_obstacles()
