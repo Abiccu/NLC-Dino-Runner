@@ -4,6 +4,7 @@ import os
 TITTLE = "Chrome Dino Runner"
 FONT_STYLE = 'freesansbold.ttf'
 BLACK_COLOR = (0, 0, 0)
+WHITE = (255, 255, 255)
 HEART_COUNT = 5
 HAMMER_POWER_UP = 10
 HAMMER_TYPE = "hammer"

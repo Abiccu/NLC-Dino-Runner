@@ -8,7 +8,8 @@ from nlc_dino_runner.utils.constants import (
     BG,
     FPS,
     RUNNING,
-    IMG_DIR
+    IMG_DIR,
+    WHITE
 )
 from nlc_dino_runner.components.cloud import Cloud
 from nlc_dino_runner.components.player_hearts.player_heart_manager import PlayerHeartManager
@@ -19,15 +20,11 @@ from nlc_dino_runner.components.dinosaur import Dinosaur
 from nlc_dino_runner.utils import text_utils, text_utils_sound
 class Game:
     def __init__(self):
-        #llamamos a pygame y a su metodo init para inicializar y cuando llamaemos recien se va mostrar
-        #pygame.display.set_caption es un metodo que ya tiene pygame para configurar el titulo de la ventana
         pygame.init()
         pygame.display.set_caption(TITTLE)
         pygame.display.set_icon(ICON)
         self.playing = False
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        # pygame.display.set_mode llamamos un metodo de pygame que recibe el tamaño de la ventana
-        #set_icon recibe una superficie como parametro
         self.x_pos_bg = 0
         self.y_pos_bg = 400
         self.game_speed = 15
@@ -40,6 +37,8 @@ class Game:
         self.points = 0
         self.RUNING = True
         self.death_count = 0
+        self.white = WHITE
+        self.counter = 0
 
     def score(self):
         self.points += 1
@@ -47,8 +46,6 @@ class Game:
             self.game_speed +=1
         score_element, score_element_rec = text_utils.get_score_element(self.points)
         self.screen.blit(score_element, score_element_rec)
-# (run) va a ejecutar todos los metodos que le pongamos
-        #self.screen.blit(text, text_rect)
         self.player.check_invincibility(self.screen)
 
     def show_menu(self):
@@ -63,17 +60,15 @@ class Game:
     def print_menu_elements(self):
         half_width = SCREEN_WIDTH // 2
         half_height = SCREEN_HEIGHT // 2
-        if self.death_count == 0:
-            text_element, text_element_rec = text_utils.get_centared_message("Press any key to start")
-            self.screen.blit(text_element, text_element_rec)
-            # self.screen.blit(ICON, (half_width - 40, half_height -150))
-        elif self.death_count >0:
+        if self.death_count >= 1:
             text_element, text_element_rec = text_utils.get_centared_message("Press any key to restart")
             self.screen.blit(text_element, text_element_rec)
             text_element, text_element_rec = text_utils.get_centared_message("Dath Coundt :" + str(self.death_count),height=half_height + 50)
             self.screen.blit(text_element, text_element_rec)
+        else:
+            text_element, text_element_rec = text_utils.get_centared_message("Press any key to start")
+            self.screen.blit(text_element, text_element_rec)
         self.screen.blit(ICON, (half_width - 40, half_height - 150))
-
 
     def handle_key_events_on_menu(self):
         for event in pygame.event.get():
@@ -105,14 +100,10 @@ class Game:
             if not self.playing:
                 self.show_menu()
 
-# pygame.quit() para terminar el siclo
     def events(self):
         for event in pygame.event.get():
-            #QUIT event.type es lo que se va precionar y compara se sera igual a QUIT que es el icono para cerrar la ventana
             if event.type == pygame.QUIT:
                 self.playing = False
-        # para capturar todos los eventos es mejor crear un ciclo
-        # pygame.even.get es una lista de eventos y con for estamos iterando todos esos eventos
 
     def update(self):
         user_input = pygame.key.get_pressed()
@@ -123,7 +114,8 @@ class Game:
 
     def draw(self):
         self.clock.tick(FPS)
-        self.screen.fill((255, 255, 255))
+        self.screen_update()
+        self.screen.fill((self.white))
         self.draw_background()
         self.player.draw(self.screen)
         self.obstacle.draw(self.screen)
@@ -134,6 +126,14 @@ class Game:
         #self.heart.draw()
         pygame.display.update()
         pygame.display.flip()
+
+    def screen_update(self):
+        self.counter += 1
+        if self.counter == 1000:
+            self.white = (71, 71, 71)
+        if self.counter == 2000:
+            self.counter = 0
+            self.white = (255, 255, 255)
 #pygame.display.flill el metodo flill de pygame nos sirve para llenar la superficie con un color entero(recibe una dupla)
 # flip , actualiza loque se configure y se muestra en la pantalla
     # update tambien muestra en la pantalla pero selo recibe siertas partes de nuestra pantalla
