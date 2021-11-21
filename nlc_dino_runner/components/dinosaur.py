@@ -1,26 +1,27 @@
 import pygame
 
 from nlc_dino_runner.components.powerups.hammers import Hammers
+from nlc_dino_runner.utils import text_utils_sound
 from nlc_dino_runner.utils.constants import RUNNING, JUMPING, SHIELD_TYPE, DEFAULT_TYPE, DUCKING_SHIELD, \
-    RUNNING_SHIELD, DUCKING, RUNNING_SHIELD, FONT_STYLE,BLACK_COLOR,JUMPING_SHIELD, HAMMER_TYPE, RUNNING_HAMMER
-
+    RUNNING_SHIELD, DUCKING, RUNNING_SHIELD, FONT_STYLE, BLACK_COLOR, JUMPING_SHIELD, HAMMER_TYPE, RUNNING_HAMMER, \
+    DUCKING_HAMMER, JUMPING_HAMMER
 from pygame.sprite import Sprite
 
 
 class Dinosaur(Sprite):
     X_POS = 80
     Y_POS = 320
-    Y_POS_DUCK = 350
-    JUMP_VEL = 12
+    Y_POS_DUCK = 360
+    JUMP_VEL = 10
 
 
 # step_index es un contador para saber cuando debemos cambiar de imagen
 
     def __init__(self):
         #self.image = RUNNING[0]
-        self.run_img = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD}
-        self.duck_img = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD}
-        self.jump_img = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD}
+        self.run_img = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD, HAMMER_TYPE: RUNNING_HAMMER}
+        self.duck_img = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD, HAMMER_TYPE:DUCKING_HAMMER}
+        self.jump_img = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD, HAMMER_TYPE: JUMPING_HAMMER}
         self.type = DEFAULT_TYPE
         self.image = self.run_img[self.type][0]
 
@@ -64,7 +65,7 @@ class Dinosaur(Sprite):
             self.dino_run = False
             self.dino_duck = False
             self.dino_jump = True
-            #self.sound_jump.play()
+            text_utils_sound.sound_play('jump.wav')
         elif not self.dino_jump:
             self.dino_run = True
             self.dino_duck = False
@@ -77,7 +78,7 @@ class Dinosaur(Sprite):
             self.hammer = Hammers(self.dino_rect.x + 100, self.dino_rect.y + 50)
             self.hammer_enabled = max(self.hammer_enabled - 1, 0)
             if self.hammer_enabled == 0:
-                self.update_to_default(HAMMER_TYPE)
+                self.update_type_to_default(HAMMER_TYPE)
         if self.hammer:
             self.hammer.update()
 

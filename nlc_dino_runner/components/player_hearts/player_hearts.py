@@ -10,8 +10,5 @@ class Heart:
         self.rect.x = x_position
         self.rect.y = y_position
 
-    def update(self):
-        pass
-
     def draw(self, screen):
         screen.blit(self.image, self.rect)

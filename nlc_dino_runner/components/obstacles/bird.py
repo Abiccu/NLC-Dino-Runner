@@ -10,7 +10,7 @@ class Birds(Obstacle):
         #self.image = BIRD[0]
         self.type = 0
         super().__init__(image, self.type)
-        self.rect.y = 240
+        self.rect.y = 280
         self.index = 0
 
     def draw(self,screen):

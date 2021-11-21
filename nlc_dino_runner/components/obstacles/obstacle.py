@@ -11,9 +11,9 @@ class Obstacle(Sprite):
         self.rect.x = SCREEN_WIDTH
         self.index = 0
 
-    def update(self, obstacles):
-        self.rect.x -= 20
-        if self.rect.x < -self.rect.width:
+    def update(self, game_speed, obstacles):
+        self.rect.x -= game_speed
+        if self.rect.x < -self.rect.width and obstacles:
             obstacles.pop()
         if self.index >= 10:
             self.index = 0
@@ -21,17 +21,4 @@ class Obstacle(Sprite):
     def draw(self, screen):
         screen.blit(self.image[self.type], self.rect)
 
-    # def __init__(self, image, index):
-    # self.image = image
-    # self.index = index
-    # self.rect = self.image[self.index].get_rect()
-    # self.rect.x = SCREEN_WIDTH
 
-    # def update(self, obstacles):
-    # self.rect.x -= 20
-    # if self.rect.x < -self.rect.width:
-    # obstacles.pop()
-    # pop se usa para sacar de  nuestra lista
-
-    # def draw(self, screen):
-    # screen.blit(self.image[self.index], self.rect)

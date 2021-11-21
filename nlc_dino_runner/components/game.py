@@ -6,7 +6,9 @@ from nlc_dino_runner.utils.constants import (
     SCREEN_WIDTH,
     SCREEN_HEIGHT,
     BG,
-    FPS
+    FPS,
+    RUNNING,
+    IMG_DIR
 )
 from nlc_dino_runner.components.cloud import Cloud
 from nlc_dino_runner.components.player_hearts.player_heart_manager import PlayerHeartManager
@@ -14,13 +16,12 @@ from nlc_dino_runner.components.powerups.power_up_manager import PowerUpManager
 from nlc_dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from nlc_dino_runner.components.obstacles.cactus import Cactus
 from nlc_dino_runner.components.dinosaur import Dinosaur
-from nlc_dino_runner.utils import text_utils
+from nlc_dino_runner.utils import text_utils, text_utils_sound
 class Game:
     def __init__(self):
         #llamamos a pygame y a su metodo init para inicializar y cuando llamaemos recien se va mostrar
         #pygame.display.set_caption es un metodo que ya tiene pygame para configurar el titulo de la ventana
         pygame.init()
-        pygame.mixer.init()
         pygame.display.set_caption(TITTLE)
         pygame.display.set_icon(ICON)
         self.playing = False
@@ -29,7 +30,7 @@ class Game:
         #set_icon recibe una superficie como parametro
         self.x_pos_bg = 0
         self.y_pos_bg = 400
-        self.game_speed = 20
+        self.game_speed = 15
         self.clock = pygame.time.Clock()
         self.player = Dinosaur()
         self.obstacle = ObstacleManager()
@@ -42,7 +43,7 @@ class Game:
 
     def score(self):
         self.points += 1
-        if self.points % 20 == 0:
+        if self.points % 100 == 0:
             self.game_speed +=1
         score_element, score_element_rec = text_utils.get_score_element(self.points)
         self.screen.blit(score_element, score_element_rec)
@@ -65,11 +66,11 @@ class Game:
         if self.death_count == 0:
             text_element, text_element_rec = text_utils.get_centared_message("Press any key to start")
             self.screen.blit(text_element, text_element_rec)
-        #self.screen.blit(ICON, (half_width - 40, half_height -150))
-        else:
+            # self.screen.blit(ICON, (half_width - 40, half_height -150))
+        elif self.death_count >0:
             text_element, text_element_rec = text_utils.get_centared_message("Press any key to restart")
             self.screen.blit(text_element, text_element_rec)
-            text_element, text_element_rec = text_utils.get_centared_message("Dath Coundt :" + str(self.death_count), height=half_height + 50)
+            text_element, text_element_rec = text_utils.get_centared_message("Dath Coundt :" + str(self.death_count),height=half_height + 50)
             self.screen.blit(text_element, text_element_rec)
         self.screen.blit(ICON, (half_width - 40, half_height - 150))
 
@@ -91,14 +92,15 @@ class Game:
         self.obstacle.reset_obstacles()
         #cambiamos a True para que comiense a correr el juego
         self.playing = True
+        self.create_components()
         while self.playing:
             self.events()
             self.update()
             self.draw()
 
-
     def execute(self):
         self.running = True
+        text_utils_sound.sound_play('mixkit-ominous-drums-227.wav')
         while self.running:
             if not self.playing:
                 self.show_menu()
@@ -147,6 +149,6 @@ class Game:
         # self.screen es a pantalla y la vamos actualizando es un objeto a las que vamos agragando mas cosas
 
     def create_components(self):
-        self.obstacle_manager.reset_obstacles()
+        self.obstacle.reset_obstacles()
         self.power_up_manager.reset_power_ups(self.points)
-        self.player_heart_manager.reset_hearts()
+        self.player_heart_manager.recet_hearts()
